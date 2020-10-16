@@ -1,0 +1,18 @@
+version: "3"
+services:
+
+  postgres:
+    image: postgres:12-alpine
+    restart: unless-stopped
+    volumes:
+      - ./db_data:/var/lib/postgresql/db_data
+    environment:
+      - "POSTGRES_PASSWORD=postgres"
+  
+  legato:
+    build:
+      context: .
+      dockerfile: Dockerfile.legato
+    restart: unless-stopped
+    volumes:
+      - ./config:/config

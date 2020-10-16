@@ -1,0 +1,17 @@
+FROM alpine:latest as builder
+
+ARG branch=main
+WORKDIR /build
+RUN apk add git go vips vips-dev
+RUN git clone --single-branch --branch ${branch} https://github.com/harmony-development/legato.git
+
+WORKDIR /build/legato
+RUN go get -v -t -d ./...
+RUN go build .
+
+FROM alpine:latest
+COPY ./legato-entrypoint.sh /
+COPY --from=builder /build/legato/sql/schemas/models.sql /var/lib/legato/models.sql
+COPY --from=builder /build/legato/legato /bin/legato
+
+ENTRYPOINT [ "/legato-entrypoint.sh" ]
