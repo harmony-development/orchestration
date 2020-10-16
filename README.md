@@ -9,7 +9,7 @@ $ docker-compose -f docker-compose.legato.yml build
 $ docker-compose -f docker-compose.legato.yml up
 <^C>
 $ vi config/config.json
-$ docker-compose up -d
+$ docker-compose -f docker-compose.legato.yml up -d
 ```
 
 The default postgres information is `postgres` - as username, password, hostname and database name.
